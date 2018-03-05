@@ -1,11 +1,10 @@
-class Album extends Component {
-  render() {
-    return (
-      <div className="Album">
-        <p>Lorem ipsum dolor sit amet</p>
-      </div>
-    );
-  }
-}
+import React from 'react';
+
+const Album = () => (
+  <section className="Album">
+    Album will go here
+  </section>
+);
+
 
 export default Album;
