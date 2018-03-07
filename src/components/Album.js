@@ -9,18 +9,20 @@ class Album extends Component {
       console.log("Is " + album.slug + " the same as " + this.props.match.params.slug + "?");
       return album.slug === this.props.match.params.slug
     });
-    debugger;
+
+
 
     this.state = {
-      album: albumData
+      album: album
     };
+
   }
 
   render(){
     return (
       <section className="album">
         <section id="album-info">
-          <img id="album-cover-art" src={this.state.album.albumCover} />
+          <img id="album-cover-art" src={this.state.album.albumCover} alt={this.state.album.title}/>
           <div className="album-details">
             <h1 id="album-title">{this.state.album.title}</h1>
             <h2 className="artist">{this.state.album.artist}</h2>
