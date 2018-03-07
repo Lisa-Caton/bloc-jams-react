@@ -6,11 +6,8 @@ class Album extends Component {
     super(props);
 
     const album = albumData.find( album => {
-      console.log("Is " + album.slug + " the same as " + this.props.match.params.slug + "?");
       return album.slug === this.props.match.params.slug
     });
-
-
 
     this.state = {
       album: album
