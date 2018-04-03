@@ -103,6 +103,19 @@ class Album extends Component {
     this.setState({currentVolume: newVolume});
   }
 
+  // formatTime(time){
+  //   //convert it into a string with the format of M:SS
+  //   String.prototype.toSeconds = function () {
+  //    if (!this) return null;
+  //    var hms = this.split(':');
+  //    return (+hms[0]) * 60 * 60 + (+hms[1]) * 60 + (+hms[2] || 0);
+  //   }
+  // }
+
+  // formatTime(time){
+  //     moment.duration(100, "seconds").format();
+  // }
+
   render(){
     return (
       <section className="album">
@@ -115,7 +128,7 @@ class Album extends Component {
           </div>
         </section>
         <section className="songs">
-          <table id="song-list">
+          <table id="song-list" className="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
             <colgroup>
               <col id="song-number-column" />
               <col id="song-title-column" />
@@ -124,15 +137,16 @@ class Album extends Component {
             <tbody>
             {this.state.album.songs.map( (song, index) =>
               <tr className="song" key={index} onClick={()=> this.handleSongClick(song)} >
-                <td className="song-actions">
+                <td className="song-actions mdl-data-table__cell--non-numeric">
                   <button>
-                    <span className="song-number">{index+1}</span>
-                    <span className="ion-play"></span>
-                    <span className="ion-pause"></span>
+                {/* <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored"> */}
+                    <span className="song-number material-icons">{index+1}</span>
+                    <span className="ion-play material-icons"></span>
+                    <span className="ion-pause material-icons"></span>
                   </button>
                 </td>
-                <td className="song-title">{song.title}</td>
-                <td className="song-duration">{song.duration}</td>
+                <td className="song-title mdl-data-table__cell--non-numeric">{song.title}</td>
+                <td className="song-duration mdl-data-table__cell--non-numeric">{song.duration}</td>
               </tr>
             )}
           </tbody>
