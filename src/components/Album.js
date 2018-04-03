@@ -16,7 +16,8 @@ class Album extends Component {
       currentSong: album.songs[0],
       currentTime: 0,
       duration: album.songs[0].duration,
-      currentVolume: 0
+      currentVolume: 0,
+      value: ''
     };
 
     this.audioElement = document.createElement('audio');
@@ -100,8 +101,10 @@ class Album extends Component {
 
   handleVolumeChange(e) {
     // const newVolume = e.target.value;
+    // const newVolume = e.target.value;
+    // this.audioElement.currentVolume = newVolume;
+    // this.setState({currentVolume: newVolume});
     const newVolume = e.target.value;
-    this.audioElement.currentVolume = newVolume;
     this.setState({currentVolume: newVolume});
   }
 /* end: Are all based to PlayerBar.js! */
