@@ -16,7 +16,8 @@ class Album extends Component {
       currentSong: album.songs[0],
       currentTime: 0,
       duration: album.songs[0].duration,
-      currentVolume: 0
+      currentVolume: 0,
+      isHovered: false
     };
 
     this.audioElement = document.createElement('audio');
@@ -103,13 +104,23 @@ class Album extends Component {
     this.setState({currentVolume: newVolume});
   }
 
- formatTime(time) {
-    return time ? `${Math.floor(time / 60)}:${Number(time % 60 / 100).toFixed(2).substr(2,3)}` : '-:--'
+  formatTime(seconds) {
+    if (isNaN(seconds)) { return "-:--"; }
+    const wholeSeconds = Math.floor(seconds);
+    const minutes = Math.floor(wholeSeconds / 60);
+    const remainingSeconds = wholeSeconds % 60;
+    let output = minutes + ':';
+    if (remainingSeconds < 10) {
+      output += '0';
+    }
+    output += remainingSeconds;
+    return output;
   }
 
   render(){
     return (
       <section className="album">
+
         <section id="album-info">
           <img id="album-cover-art" src={this.state.album.albumCover} alt={this.state.album.title}/>
           <div className="album-details">
@@ -118,6 +129,7 @@ class Album extends Component {
             <div id="release-info">{this.state.album.year}{this.state.album.label}</div>
           </div>
         </section>
+
         <section className="songs">
           <table id="song-list" className="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
             <colgroup>
@@ -127,13 +139,24 @@ class Album extends Component {
             </colgroup>
             <tbody>
             {this.state.album.songs.map( (song, index) =>
-              <tr className="song" key={index} onClick={ ()=> this.handleSongClick(song) } >
+              <tr className="song" key={index} onClick={ ()=> this.handleSongClick(song) } 
+                onMouseEnter={ () => this.setState({ isHovered: index+1 }) }
+                onMouseLeave={ () => this.setState({ isHovered: false }) }
+              >
+
+
                 <td className="song-actions mdl-data-table__cell--non-numeric">
-                  <button>
-                {/* <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored"> */}
-                    <span className="song-number material-icons">{index+1}</span>
-                    <span className="ion-play material-icons"></span>
-                    <span className="ion-pause material-icons"></span>
+                  <button id="song-action-btns">
+
+                    { (this.state.currentSong.title === song.title) ? 
+                      <span className={ this.state.isPlaying ? "ion-pause" : "ion-play" }></span>
+                      :
+                      (this.state.isHovered === index+1) ?
+                      <span className="ion-play"></span>
+                      :
+                      <span className="song-number">{index+1}</span>
+                    }
+
                   </button>
                 </td>
                 <td className="song-title mdl-data-table__cell--non-numeric">{song.title}</td>
@@ -142,13 +165,14 @@ class Album extends Component {
             )}
           </tbody>
         </table>
+
         <PlayerBar
           isPlaying={this.state.isPlaying}
           currentSong={this.state.currentSong}
           currentTime={this.audioElement.currentTime}
           duration={this.audioElement.duration}
           currentVolume={this.state.currentVolume}
-          formatTime={(t) => this.formatTime(t)}
+          formatTime={(s) => this.formatTime(s)}
           handleSongClick={() => this.handleSongClick(this.state.currentSong)}
           handlePrevClick={() => this.handlePrevClick()}
           handleNextClick={() => this.handleNextClick()}
