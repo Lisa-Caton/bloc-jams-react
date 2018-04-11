@@ -36,10 +36,10 @@ class Album extends Component {
       }
   };
 
-    this.audioElement.addEventListener('timeupdate', this.eventListeners.timeupdate);
-    this.audioElement.addEventListener('durationchange', this.eventListeners.durationchange);
-    this.audioElement.addEventListener('volumeupdate', this.eventListeners.volumeupdate);
-    //myVariable.addEventListener('event', (e) => console.log(e))
+  this.audioElement.addEventListener('timeupdate', this.eventListeners.timeupdate);
+  this.audioElement.addEventListener('durationchange', this.eventListeners.durationchange);
+  this.audioElement.addEventListener('volumeupdate', this.eventListeners.volumeupdate);
+  //myVariable.addEventListener('event', (e) => console.log(e))
   }
 
   componentWillUnmount(){
@@ -103,18 +103,9 @@ class Album extends Component {
     this.setState({currentVolume: newVolume});
   }
 
-  // formatTime(time){
-  //   //convert it into a string with the format of M:SS
-  //   String.prototype.toSeconds = function () {
-  //    if (!this) return null;
-  //    var hms = this.split(':');
-  //    return (+hms[0]) * 60 * 60 + (+hms[1]) * 60 + (+hms[2] || 0);
-  //   }
-  // }
-
-  // formatTime(time){
-  //     moment.duration(100, "seconds").format();
-  // }
+ formatTime(time) {
+    return time ? `${Math.floor(time / 60)}:${Number(time % 60 / 100).toFixed(2).substr(2,3)}` : '-:--'
+  }
 
   render(){
     return (
@@ -136,7 +127,7 @@ class Album extends Component {
             </colgroup>
             <tbody>
             {this.state.album.songs.map( (song, index) =>
-              <tr className="song" key={index} onClick={()=> this.handleSongClick(song)} >
+              <tr className="song" key={index} onClick={ ()=> this.handleSongClick(song) } >
                 <td className="song-actions mdl-data-table__cell--non-numeric">
                   <button>
                 {/* <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored"> */}
@@ -146,7 +137,7 @@ class Album extends Component {
                   </button>
                 </td>
                 <td className="song-title mdl-data-table__cell--non-numeric">{song.title}</td>
-                <td className="song-duration mdl-data-table__cell--non-numeric">{song.duration}</td>
+                <td className="song-duration mdl-data-table__cell--non-numeric">{ this.formatTime(song.duration) }</td>
               </tr>
             )}
           </tbody>
@@ -157,6 +148,7 @@ class Album extends Component {
           currentTime={this.audioElement.currentTime}
           duration={this.audioElement.duration}
           currentVolume={this.state.currentVolume}
+          formatTime={(t) => this.formatTime(t)}
           handleSongClick={() => this.handleSongClick(this.state.currentSong)}
           handlePrevClick={() => this.handlePrevClick()}
           handleNextClick={() => this.handleNextClick()}
